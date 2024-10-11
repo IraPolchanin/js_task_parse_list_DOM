@@ -1,32 +1,29 @@
 'use strict';
 
 const listEl = document.querySelector('ul');
+const listItems = [...listEl.children];
 
-const convertToNumber = str => Number(str.replace(/[^\d.-]/g, ''));
+const convertToNumber = str => {
+  if (typeof str === 'string') {
+    const cleanedStr = str.replace(/[^\d.-]/g, '');
+    return Number(cleanedStr);
+  }
+  return NaN;
+};
 
-const sortList = (list, sortParam) =>
-  [...list].sort(
-    (a, b) =>
-      convertToNumber(b.dataset[sortParam]) -
-      convertToNumber(a.dataset[sortParam]),
+const sortList = (list, sortParam) => {
+  return [...list].sort((a, b) =>
+    convertToNumber(b.dataset[sortParam]) - convertToNumber(a.dataset[sortParam])
   );
+};
 
-const getEmployees = (sortedList, element) => {
-  element.innerHTML = '';
+const getEmployees = (sortedList) => {
+  listEl.innerHTML = '';
 
   sortedList.forEach(item => {
-    const li = document.createElement('li');
-
-    li.setAttribute('data-position', item.dataset.position);
-    li.setAttribute('data-salary', item.dataset.salary);
-    li.setAttribute('data-age', item.dataset.age);
-
-    li.textContent = item.innerText;
-
-    element.appendChild(li);
+    listEl.appendChild(item);
   });
 };
 
-const visibleEmployees = sortList([...listEl.children], 'salary');
-
-getEmployees(visibleEmployees, listEl);
+const sortedEmployees = sortList(listItems, 'salary');
+getEmployees(sortedEmployees);
