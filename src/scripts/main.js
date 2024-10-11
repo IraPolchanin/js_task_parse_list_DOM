@@ -2,19 +2,17 @@
 
 const listEl = document.querySelector('ul');
 
-const listItemEl = [...document.querySelectorAll('[data-salary]')];
-
 const convertToNumber = (str) => Number(str.replace('$', '').replace(',', ''));
 
-const sortList = (list) =>
+const sortList = (list, sortParam) =>
   list.sort(
     (a, b) =>
-      convertToNumber(b.dataset.salary) - convertToNumber(a.dataset.salary),
+      convertToNumber(b.dataset[sortParam]) - convertToNumber(a.dataset[sortParam]),
   );
 
 const getEmployees = (sortedList, element) => (element.innerHTML = sortedList);
 
-const visibleEmployeesHTML = sortList(listItemEl)
+const visibleEmployeesHTML = sortList([...listEl.children], 'salary')
   .map(
     (item) =>
       `<li
