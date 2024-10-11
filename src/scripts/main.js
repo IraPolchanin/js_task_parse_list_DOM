@@ -7,7 +7,8 @@ const convertToNumber = (str) => Number(str.replace('$', '').replace(',', ''));
 const sortList = (list, sortParam) =>
   list.sort(
     (a, b) =>
-      convertToNumber(b.dataset[sortParam]) - convertToNumber(a.dataset[sortParam]),
+      convertToNumber(b.dataset[sortParam]) -
+      convertToNumber(a.dataset[sortParam]),
   );
 
 const getEmployees = (sortedList, element) => (element.innerHTML = sortedList);
