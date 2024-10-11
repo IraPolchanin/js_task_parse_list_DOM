@@ -2,28 +2,31 @@
 
 const listEl = document.querySelector('ul');
 
-const convertToNumber = (str) => Number(str.replace('$', '').replace(',', ''));
+const convertToNumber = str => Number(str.replace(/[^\d.-]/g, ''));
 
 const sortList = (list, sortParam) =>
-  list.sort(
+  [...list].sort(
     (a, b) =>
       convertToNumber(b.dataset[sortParam]) -
       convertToNumber(a.dataset[sortParam]),
   );
 
-const getEmployees = (sortedList, element) => (element.innerHTML = sortedList);
+const getEmployees = (sortedList, element) => {
+  element.innerHTML = '';
 
-const visibleEmployeesHTML = sortList([...listEl.children], 'salary')
-  .map(
-    (item) =>
-      `<li
-        data-position="${item.dataset.position}"
-        data-salary="${item.dataset.salary}"
-        data-age="${item.dataset.age}"
-      >
-        ${item.innerText}
-      </li>`,
-  )
-  .join('');
+  sortedList.forEach(item => {
+    const li = document.createElement('li');
 
-getEmployees(visibleEmployeesHTML, listEl);
+    li.setAttribute('data-position', item.dataset.position);
+    li.setAttribute('data-salary', item.dataset.salary);
+    li.setAttribute('data-age', item.dataset.age);
+
+    li.textContent = item.innerText;
+
+    element.appendChild(li);
+  });
+};
+
+const visibleEmployees = sortList([...listEl.children], 'salary');
+
+getEmployees(visibleEmployees, listEl);
